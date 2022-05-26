@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Path Finder</title>
+</head>
+<body>
+    <div id="top">
+        <div id="head">
+            <button class="roundButton" onclick="window.location.reload();">
+                <img src="https://img.icons8.com/ios-glyphs/23/000000/refresh--v1.png"/>
+            </button>
+            <button class="roundButton" id="play">
+                <img src="https://img.icons8.com/ios-filled/23/000000/play--v1.png"/>
+            </button>
+        </div>
+        <h2>↓ Speed ↓</h2>
+        <div class="slidecontainer">
+            <input type="range" min="5" max="200" value="100" class="slider" id="speed">
+        </div>
+        <p><span id="ms">100</span> ms</p>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script src="a_star.js"></script>
+    <script src="node.js"></script>
+    <script src="grid.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
