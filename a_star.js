@@ -4,9 +4,6 @@ class A_Star{
         this.startNode = startNode
         this.goalNode = goalNode
         this.ctx = ctx
-        this.gCost
-        this.hCost
-        this.fCost
         this.openSet = []
         this.closedSet = []
         this.openSet.push(this.startNode)
