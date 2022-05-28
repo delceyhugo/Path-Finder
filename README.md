@@ -6,3 +6,5 @@ Projet réalisé en orienté objet et sans librairies.
 Projet réalisé avec l'aide de [Wikipédia](https://fr.wikipedia.org/wiki/Algorithme_A*) et de quelques recherches google.  
   
 Demo disponnible [ici](https://delceyhugo.github.io/Path-Finder/)
+  
+![Exemple](https://github.com/delceyhugo/Path-Finder/blob/master/image1.png?raw=true)
