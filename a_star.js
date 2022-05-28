@@ -1,9 +1,9 @@
 class A_Star{
-    constructor(grid, startNode, goalNode, ctx){
+    constructor(grid, startNode, goalNode){
         this.grid = grid
         this.startNode = startNode
         this.goalNode = goalNode
-        this.ctx = ctx
+        this.ctx = grid.ctx
         this.openSet = []
         this.closedSet = []
         this.openSet.push(this.startNode)
@@ -13,6 +13,8 @@ class A_Star{
         this.goalNode.setOpening(true)
         this.startNode.color = '#00FF00'
         this.goalNode.color = '#FF0000'
+        this.speed = 100
+        this.play = false
 
     }
     heuristic(a, b){
@@ -21,63 +23,73 @@ class A_Star{
         return Math.sqrt(sideA*sideA + sideB*sideB);
     }
     execute(){
-        if(this.openSet.length > 0 && !this.done){
-            // Set color
-            for (let i = 0; i < this.openSet.length; i++) {
-                this.openSet[i].color = '#0000FF'
-            }
-            for (let i = 0; i < this.closedSet.length; i++) {
-                this.closedSet[i].color = '#000000'
-            }
-
-            // Select suitable node
-            let select = 0
-            for (let i = 0; i < this.openSet.length; i++) {
-                if(this.openSet[i].f < this.openSet[select].f) select = i
-            }
-            let current = this.openSet[select]
-
-            // Find path
-            let node = current
-            this.path.push(node)
-            while (node.cameFrom){
-                this.path.push(node.cameFrom)
-                node.color = '#00FF00'
-                node = node.cameFrom
-            }
-            if(current === this.goalNode){
-                this.done = true
-            } 
-            for (let i = this.openSet.length-1; i >= 0; i--) {
-                if(this.openSet[i] == current){
-                    this.openSet.splice(i, 1)
+        this.play = true
+        clearInterval(this.loop)
+        this.loop = setInterval(() => {
+            this.grid.draw()
+            if(this.openSet.length > 0 && !this.done){
+                // Set color
+                for (let i = 0; i < this.openSet.length; i++) {
+                    this.openSet[i].color = '#0000FF'
                 }
-            }
-            this.closedSet.push(current)
-            for (let i = 0; i < current.neighbors.length; i++) {
-                let neighbor = current.neighbors[i]
-                if(!this.closedSet.includes(neighbor)){
-                    let tempCost = current.cost + 1
-                    if(this.openSet.includes(neighbor)){
-                        if(tempCost < neighbor.cost){
-                            neighbor.cost = tempCost
-                        }
-                    }else{
-                        neighbor.cost = tempCost
-                        this.openSet.push(neighbor)
+                for (let i = 0; i < this.closedSet.length; i++) {
+                    this.closedSet[i].color = '#000000'
+                }
+    
+                // Select suitable node
+                let select = 0
+                for (let i = 0; i < this.openSet.length; i++) {
+                    if(this.openSet[i].f < this.openSet[select].f) select = i
+                }
+                let current = this.openSet[select]
+    
+                // Find path
+                let node = current
+                this.path.push(node)
+                while (node.cameFrom){
+                    this.path.push(node.cameFrom)
+                    node.color = '#00FF00'
+                    node = node.cameFrom
+                }
+                if(current === this.goalNode){
+                    this.done = true
+                } 
+                for (let i = this.openSet.length-1; i >= 0; i--) {
+                    if(this.openSet[i] == current){
+                        this.openSet.splice(i, 1)
                     }
-                    neighbor.h = this.heuristic(neighbor, this.goalNode)
-                    neighbor.f = neighbor.cost + neighbor.h
-                    neighbor.cameFrom = current
                 }
+                this.closedSet.push(current)
+                for (let i = 0; i < current.neighbors.length; i++) {
+                    let neighbor = current.neighbors[i]
+                    if(!this.closedSet.includes(neighbor)){
+                        let tempCost = current.cost + 1
+                        if(this.openSet.includes(neighbor)){
+                            if(tempCost < neighbor.cost){
+                                neighbor.cost = tempCost
+                            }
+                        }else{
+                            neighbor.cost = tempCost
+                            this.openSet.push(neighbor)
+                        }
+                        neighbor.h = this.heuristic(neighbor, this.goalNode)
+                        neighbor.f = neighbor.cost + neighbor.h
+                        neighbor.cameFrom = current
+                    }
+                }
+            }else if(this.done){
+                this.ctx.fillStyle = '#00FF00'
+                this.grid.write('COMPLETE')
+                clearInterval(this.loop);
             }
-        }else if(this.done){
-            this.grid.write('COMPLETE')
-            clearInterval(loop);
-        }
-        else{
-            this.grid.write('NO SOLUTION')
-            clearInterval(loop);
-        }
+            else{
+                this.ctx.fillStyle = '#FF0000'
+                this.grid.write('NO SOLUTION')
+                clearInterval(this.loop);
+            }
+        }, this.speed)
+
+
+
     }
 }

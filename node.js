@@ -13,7 +13,6 @@ class Node{
     }
     setOpening(boolean){
         this.open = boolean
-        this.color = '#444444'
         this.grid.findAllNeighbor()
     }
     findNeighbor(){
@@ -66,6 +65,5 @@ class Node{
         ctx.fillStyle = this.color
         ctx.arc(x+k/2, y+k/2, k/4, 0, Math.PI*2)
         ctx.fill();
-
     }
 }

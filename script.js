@@ -6,36 +6,14 @@ const grid = new Grid(50, 50, canvas)
 const a_star = new A_Star(grid, grid.el[0][0], grid.el[grid.cols-1][grid.rows-1])
 grid.draw()
 
-
-let play
-let loop
-let interval
-let slider = document.querySelector('#speed')
-let count = document.querySelector('#ms')
-let speed = slider.value
-slider.oninput = function() {
-    speed = this.value
-    count.innerHTML = speed
-    console.log(speed);
-    if(play){
-        clearInterval(interval)
-        loop(speed)
-    }
+// Set speed on input
+document.querySelector('#speed').oninput = function() {
+    a_star.speed = this.value
+    a_star.play ? a_star.execute() : null
+    document.querySelector('#ms').innerHTML = this.value
 }
 
+// Play on click
 document.querySelector('#play').addEventListener('click', () =>{
-    if(!a_star.done && !play){
-        play = true
-        loop(speed)
-    }
+    a_star.execute()
 })
-
-loop = function(speed){
-    interval = setInterval(() => {
-        grid.draw()
-        a_star.execute()
-    }, speed)
-}
-
-
-
